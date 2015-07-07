@@ -1,3 +1,4 @@
+//IMPORTAR PAQUETES CON MIDDLEWARES
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -5,15 +6,18 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
+//IMPORTAR ENRUTADORES
 var routes = require('./routes/index');
-var users = require('./routes/users');
 
+//Se crea la aplicación
 var app = express();
 
+//INSTALAR GENERADOR DE VISTAS "EJS"
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+//INSTALAR MIDDLEWARES
 // uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(logger('dev'));
@@ -22,9 +26,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+//INSTALAR ENRUTADORES Y ASOCIAR RUTAS A SUS GESTORES
 app.use('/', routes);
-app.use('/users', users);
 
+//RESTO DE RUTAS. GENERA ERROR 404 DE HTTP
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
     var err = new Error('Not Found');
@@ -34,6 +39,7 @@ app.use(function(req, res, next) {
 
 // error handlers
 
+//GESTIÓN DE ERRORES DURANTE EL DESARROLLO
 // development error handler
 // will print stacktrace
 if (app.get('env') === 'development') {
@@ -46,6 +52,7 @@ if (app.get('env') === 'development') {
     });
 }
 
+//GESTIÓN DE ERRORES DE PRODUCCIÓN
 // production error handler
 // no stacktraces leaked to user
 app.use(function(err, req, res, next) {
@@ -56,5 +63,5 @@ app.use(function(err, req, res, next) {
     });
 });
 
-
+//EXPORTAR APP PARA COMANDO DE ARRANQUE
 module.exports = app;
