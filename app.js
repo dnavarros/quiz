@@ -5,10 +5,11 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var partials = require('express-partials'); //Añade vistas parciales y permite incluir un marco (layout) único
+
 
 //IMPORTAR ENRUTADORES
 var routes = require('./routes/index');
-
 //Se crea la aplicación
 var app = express();
 
@@ -16,6 +17,10 @@ var app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+
+//Carga del middleware de express-partials
+app.use(partials());
+partials.register('/quizes/question','express');
 
 //INSTALAR MIDDLEWARES
 // uncomment after placing your favicon in /public
@@ -62,6 +67,7 @@ app.use(function(err, req, res, next) {
         error: {}
     });
 });
+
 
 //EXPORTAR APP PARA COMANDO DE ARRANQUE
 module.exports = app;
