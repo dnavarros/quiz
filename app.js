@@ -6,6 +6,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var partials = require('express-partials'); //Añade vistas parciales y permite incluir un marco (layout) único
+var methodOverride = require('method-override');
 
 
 //IMPORTAR ENRUTADORES
@@ -29,6 +30,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 //INSTALAR ENRUTADORES Y ASOCIAR RUTAS A SUS GESTORES
