@@ -17,7 +17,7 @@ exports.load = function(req, res, next, quizId){
 exports.index = function(req, res) {
 var search = "%";
 
-if(req.query.search != undefined)
+if(req.query.search !== undefined)
 {
 search = "%" + req.query.search.trim() + "%";
 search = search.replace(/\s+/g,"%");
@@ -27,7 +27,12 @@ models.Quiz.findAll({where:["upper(pregunta) like ?", search.toUpperCase()], ord
 
   then(
   function(quizes) {
-  res.render('quizes/index', { quizes: quizes, errors: [] });
+    if(req.query.search !== undefined){
+      res.render('quizes/index', { quizes: quizes, res_bus: 'Resultado de la búsqueda:', errors: [] });
+    }
+    else{
+      res.render('quizes/index', { quizes: quizes, res_bus:'', errors: [] });
+    }
   }
   ).catch(function(error) { next(error);})
 };
@@ -76,7 +81,7 @@ exports.create = function(req, res) {
         res.render('quizes/new', {quiz: quiz, errors: err.errors});
       } else {
         quiz // save: guarda en DB campos pregunta y respuesta de quiz
-        .save({fields: ["pregunta", "respuesta"]})
+        .save({fields: ["pregunta", "respuesta", "tema"]})
         .then( function(){ res.redirect('/quizes')})
       }      // res.redirect: Redirección HTTP a lista de preguntas
     }
@@ -94,6 +99,7 @@ exports.edit = function(req, res) {
 exports.update = function(req, res) {
   req.quiz.pregunta  = req.body.quiz.pregunta;
   req.quiz.respuesta = req.body.quiz.respuesta;
+  req.quiz.tema = req.body.quiz.tema;
 
   req.quiz
   .validate()
@@ -103,7 +109,7 @@ exports.update = function(req, res) {
         res.render('quizes/edit', {quiz: req.quiz, errors: err.errors});
       } else {
         req.quiz     // save: guarda campos pregunta y respuesta en DB
-        .save( {fields: ["pregunta", "respuesta"]})
+        .save( {fields: ["pregunta", "respuesta", "tema"]})
         .then( function(){ res.redirect('/quizes');});
       }     // Redirección HTTP a lista de preguntas (URL relativo)
     }

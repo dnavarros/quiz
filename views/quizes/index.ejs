@@ -7,10 +7,15 @@
 <div class="btnCrear">
   <a href="/quizes/new"><button type="button">Crear pregunta</button></a>
 </div>
+
+<% if(res_bus != ''){ %>
+  <p><%= res_bus %></p>
+<% } %>
+
 <table>
   <% var i; for (i=0; i < quizes.length; i++) { %>
     <tr>
-      <td><a href="quizes/<%= quizes[i].id %>"><%= quizes[i].pregunta %></a></td>
+      <td><a href="quizes/<%= quizes[i].id %>"><%= quizes[i].pregunta %></a><span class="tema"> (<%= quizes[i].tema %>)</span></td>
       <td><a href="quizes/<%= quizes[i].id %>/edit"><button>editar</button></a></td>
       <td>
         <form method="post" action="quizes/<%= quizes[i].id %>?_method=delete">

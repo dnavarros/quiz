@@ -12,3 +12,9 @@ nav span             { margin: 0px 10px 0px 0px;}
 #ErrorMsgs           { color: #f61; font-size: smaler}
 
 div.btnCrear {text-align: left; margin: 10px 0 10px 40px;}
+
+h1, h2 {color: #207ce5;}
+p, label {color: #6495ed;}
+a {color: #000080;}
+
+.tema {color: #008080;}
