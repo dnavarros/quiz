@@ -12,8 +12,8 @@ module.exports = function(sequelize, DataTypes) {
         validate: { notEmpty: {msg: "-> Falta Respuesta"}}
       },
       tema: {
-        type: DataTypes.STRING/*,
-        validate: { allowNull: {msg: "-> Falta Tema"}}*/
+          type: DataTypes.STRING,
+          validate: { isIn: {args: [['Ciencia', 'Humanidades', 'Tecnología', 'Ocio', 'Otro']], msg: "-> Falta Tema"}}
       }
     }
   );

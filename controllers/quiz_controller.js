@@ -17,7 +17,7 @@ exports.load = function(req, res, next, quizId){
 exports.index = function(req, res) {
 var search = "%";
 
-if(req.query.search !== undefined)
+if(req.query.search != undefined)
 {
 search = "%" + req.query.search.trim() + "%";
 search = search.replace(/\s+/g,"%");
@@ -28,11 +28,11 @@ models.Quiz.findAll({where:["upper(pregunta) like ?", search.toUpperCase()], ord
   then(
   function(quizes) {
     if(req.query.search !== undefined){
-      res.render('quizes/index', { quizes: quizes, res_bus: 'Resultado de la búsqueda:', errors: [] });
-    }
-    else{
-      res.render('quizes/index', { quizes: quizes, res_bus:'', errors: [] });
-    }
+        res.render('quizes/index', { quizes: quizes, res_bus: 'Resultado de la búsqueda:', errors: [] });
+      }
+      else{
+        res.render('quizes/index', { quizes: quizes, res_bus:'', errors: [] });
+      }
   }
   ).catch(function(error) { next(error);})
 };
@@ -99,7 +99,6 @@ exports.edit = function(req, res) {
 exports.update = function(req, res) {
   req.quiz.pregunta  = req.body.quiz.pregunta;
   req.quiz.respuesta = req.body.quiz.respuesta;
-  req.quiz.tema = req.body.quiz.tema;
 
   req.quiz
   .validate()
