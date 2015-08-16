@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var quizController = require ('../controllers/quiz_controller.js'); //Importamos el controlador de quiz
 var commentController = require('../controllers/comment_controller');
+var sessionController = require('../controllers/session_controller');
 
 /* GET home page. */
 router.get('/', function(req, res) {
@@ -17,6 +18,11 @@ Se instala con el método param() de express (http://expressjs.com/4x/api.html#r
 para que router.param(‘quizId’, quizController.load) solo invoque quizController.load si
 existe el parámetro :quizId está en algún lugar de la cabecera HTTP (en query, body o param).*/
 router.param('quizId', quizController.load); // autoload :quizID
+
+// Definición de rutas de sesion
+router.get('/login',  sessionController.new);     // formulario login
+router.post('/login', sessionController.create);  // crear sesión
+router.get('/logout', sessionController.destroy); // destruir sesión
 
 //Definición de rutas de /quizes
 router.get('/quizes',                      quizController.index);
