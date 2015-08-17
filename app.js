@@ -8,6 +8,7 @@ var bodyParser = require('body-parser');
 var partials = require('express-partials'); //Añade vistas parciales y permite incluir un marco (layout) único
 var methodOverride = require('method-override');
 var session = require('express-session');
+var isFromSession;
 
 
 //IMPORTAR ENRUTADORES
@@ -48,6 +49,35 @@ app.use(function(req, res, next) {
   next();
 });
 
+//Auto LogOut-------------------------------------------------
+// Herpers dinamicos:
+app.use(function(req, res, next) {
+
+// guardar path en sesion.redir para despues de login
+if (!req.path.match(/\/login|\/logout/)) {
+  req.session.redir = req.path;
+}
+
+// Hacer visible req.session en las vistas
+res.locals.session = req.session;
+
+// Auto log-out al pasar 2 minutos
+if (req.session.transaccion){
+  var ultimaTransaccion = new Date().getTime();
+  var intervalo = ultimaTransaccion - req.session.transaccion;
+
+  if (intervalo > (2 * 60 * 1000)) {
+  delete req.session.transaccion;
+  req.session.autoLogout = true;
+  res.redirect("/logout");
+  }
+  else {
+    req.session.tiempo = ultimaTransaccion;
+  }
+};
+
+next();
+});
 
 //INSTALAR ENRUTADORES Y ASOCIAR RUTAS A SUS GESTORES
 app.use('/', routes);
