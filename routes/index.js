@@ -18,6 +18,7 @@ Se instala con el método param() de express (http://expressjs.com/4x/api.html#r
 para que router.param(‘quizId’, quizController.load) solo invoque quizController.load si
 existe el parámetro :quizId está en algún lugar de la cabecera HTTP (en query, body o param).*/
 router.param('quizId', quizController.load); // autoload :quizID
+router.param('commentId', commentController.load);  // autoload :commentId
 
 // Definición de rutas de sesion
 router.get('/login',  sessionController.new);     // formulario login
@@ -37,6 +38,8 @@ router.delete('/quizes/:quizId(\\d+)',     sessionController.loginRequired, quiz
 //Definición de rutas de comentarios
 router.get('/quizes/:quizId(\\d+)/comments/new', commentController.new);
 router.post('/quizes/:quizId(\\d+)/comments', commentController.create);
+router.get('/quizes/:quizId(\\d+)/comments/:commentId(\\d+)/publish', sessionController.loginRequired, commentController.publish);
+//Debería ser router.put, al modificar una tabla de la Base de Datos
 
 //GET página de Créditos
 router.get('/author', quizController.author);
